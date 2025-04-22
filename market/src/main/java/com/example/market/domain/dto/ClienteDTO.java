@@ -1,30 +1,11 @@
-package com.example.market.infraestructure.entity;
+package com.example.market.domain.dto;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+public class ClienteDTO {
 
-@Entity
-@Table(name = "clientes")
-public class Cliente {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nombre;
     private String correo;
     private String telefono;
-
-    // Constructores, getters y setters
-    public Cliente() {}
-
-    public Cliente(String nombre, String correo, String telefono) {
-        this.nombre = nombre;
-        this.correo = correo;
-        this.telefono = telefono;
-    }
 
     public Long getId() {
         return id;
@@ -58,4 +39,3 @@ public class Cliente {
         this.telefono = telefono;
     }
 }
-
