@@ -1,5 +1,7 @@
 package com.example.market.infraestructure.entity;
 
+import java.util.Date;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -7,24 +9,30 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 @Entity
-@Table(name = "pago")
+@Table(name = "pagos")
 public class Pago {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Double fechaPago;
-    private Float monto;
-    private String metodo;
-    private String estado;
+
+    private Double monto;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaPago;
+
+    private String metodoPago;
 
     @ManyToOne
-    @JoinColumn(name = "orden_id")
-    private Orden orden;  
+    @JoinColumn(name = "orden_id", nullable = false)
+    private Orden orden;
 
-    
+    public Pago() {}
+
     public Long getId() {
         return id;
     }
@@ -33,36 +41,28 @@ public class Pago {
         this.id = id;
     }
 
-    public Double getFechaPago() {
-        return fechaPago;
-    }
-
-    public void setFechaPago(Double fechaPago) {
-        this.fechaPago = fechaPago;
-    }
-
-    public Float getMonto() {
+    public Double getMonto() {
         return monto;
     }
 
-    public void setMonto(Float monto) {
+    public void setMonto(Double monto) {
         this.monto = monto;
     }
 
-    public String getMetodo() {
-        return metodo;
+    public Date getFechaPago() {
+        return fechaPago;
     }
 
-    public void setMetodo(String metodo) {
-        this.metodo = metodo;
+    public void setFechaPago(Date fechaPago) {
+        this.fechaPago = fechaPago;
     }
 
-    public String getEstado() {
-        return estado;
+    public String getMetodoPago() {
+        return metodoPago;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setMetodoPago(String metodoPago) {
+        this.metodoPago = metodoPago;
     }
 
     public Orden getOrden() {
@@ -73,4 +73,3 @@ public class Pago {
         this.orden = orden;
     }
 }
-

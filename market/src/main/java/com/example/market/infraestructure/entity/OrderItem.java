@@ -4,33 +4,31 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "order_item")
+@Table(name = "order_items")
 public class OrderItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Double cantidad;
-    private Float precioUnitario;
 
     @ManyToOne
-    @JoinColumn(name = "orden_id")
-    private Orden orden;  
-
-    @ManyToOne
-    @JoinColumn(name = "producto_id")
-    private Producto producto; 
-
+    private Orden orden;
     
+    @ManyToOne
+    private Producto producto;
+    
+    private Integer cantidad;
+    private Double precioUnitario;
+
     public OrderItem() {}
 
-    public OrderItem(Long id, Double cantidad, Float precioUnitario) {
-        this.id = id;
+    public OrderItem(Orden orden, Producto producto, Integer cantidad, Double precioUnitario) {
+        this.orden = orden;
+        this.producto = producto;
         this.cantidad = cantidad;
         this.precioUnitario = precioUnitario;
     }
@@ -41,22 +39,6 @@ public class OrderItem {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Double getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(Double cantidad) {
-        this.cantidad = cantidad;
-    }
-
-    public Float getPrecioUnitario() {
-        return precioUnitario;
-    }
-
-    public void setPrecioUnitario(Float precioUnitario) {
-        this.precioUnitario = precioUnitario;
     }
 
     public Orden getOrden() {
@@ -73,5 +55,21 @@ public class OrderItem {
 
     public void setProducto(Producto producto) {
         this.producto = producto;
+    }
+
+    public Integer getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(Integer cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public Double getPrecioUnitario() {
+        return precioUnitario;
+    }
+
+    public void setPrecioUnitario(Double precioUnitario) {
+        this.precioUnitario = precioUnitario;
     }
 }
