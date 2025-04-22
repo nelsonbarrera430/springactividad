@@ -13,19 +13,22 @@ public class Producto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String nombre;
     private String descripcion;
     private Double precio;
     private Double stock;
 
-    
     public Producto() {}
 
-    public Producto(String nombre, String descripcion, Double precio) {
+    public Producto(String nombre, String descripcion, Double precio, Double stock) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
+        this.stock = stock;
     }
+
+    // --- GETTERS / SETTERS ---
 
     public Long getId() {
         return id;

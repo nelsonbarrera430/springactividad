@@ -1,5 +1,9 @@
 package com.example.market.infraestructure.entity;
 
+import java.util.Date;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -8,30 +12,40 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.util.List;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 @Entity
-@Table(name = "orden")
+@Table(name = "ordenes")
 public class Orden {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String fecha;
-    private String total;
-    private String estado;
 
-    @OneToMany(mappedBy = "orden")  
-    private List<Pago> pagos;  
-
-    @OneToMany(mappedBy = "orden")
-    private List<OrderItem> orderItems;  
-    
     @ManyToOne
-    @JoinColumn(name = "cliente_id")
-    private Cliente cliente;  
+    @JoinColumn(name = "cliente_id", nullable = false)
+    private Cliente cliente;
 
-    
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fecha;
+
+    private String estado;  // e.g. "pendiente", "completada", "cancelada"
+
+    @OneToMany(mappedBy = "orden", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> orderItems;
+
+    private Double total;
+
+    public Orden() {}
+
+    public Orden(Cliente cliente, Date fecha, String estado, Double total) {
+        this.cliente = cliente;
+        this.fecha = fecha;
+        this.estado = estado;
+        this.total = total;
+    }
+
     public Long getId() {
         return id;
     }
@@ -40,20 +54,20 @@ public class Orden {
         this.id = id;
     }
 
-    public String getFecha() {
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public Date getFecha() {
         return fecha;
     }
 
-    public void setFecha(String fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
-    }
-
-    public String getTotal() {
-        return total;
-    }
-
-    public void setTotal(String total) {
-        this.total = total;
     }
 
     public String getEstado() {
@@ -64,14 +78,6 @@ public class Orden {
         this.estado = estado;
     }
 
-    public List<Pago> getPagos() {
-        return pagos;
-    }
-
-    public void setPagos(List<Pago> pagos) {
-        this.pagos = pagos;
-    }
-
     public List<OrderItem> getOrderItems() {
         return orderItems;
     }
@@ -80,12 +86,11 @@ public class Orden {
         this.orderItems = orderItems;
     }
 
-    public Cliente getCliente() {
-        return cliente;
+    public Double getTotal() {
+        return total;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+    public void setTotal(Double total) {
+        this.total = total;
     }
 }
-
