@@ -8,7 +8,7 @@ public class PagoDTO {
     private Double monto;
     private Date fechaPago;
     private String metodoPago;
-    private String estado; // 👈 NUEVO CAMPO
+    private String estado; 
 
     public PagoDTO() {}
 

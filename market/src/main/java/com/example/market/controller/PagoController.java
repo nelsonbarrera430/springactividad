@@ -22,31 +22,29 @@ public class PagoController {
     @Autowired
     private PagoService pagoService;
 
-    // Obtener todos los pagos
+    
     @GetMapping
     public List<PagoDTO> getAll() {
         return pagoService.getAll();
     }
 
-    // Obtener pagos por ID de orden
     @GetMapping("/orden/{ordenId}")
     public List<PagoDTO> getByOrdenId(@PathVariable Long ordenId) {
         return pagoService.getByOrdenId(ordenId);
     }
 
-    // Guardar un nuevo pago
+   
     @PostMapping
     public PagoDTO save(@RequestBody PagoDTO dto) {
         return pagoService.save(dto);
     }
 
-    // Actualizar un pago existente
+  
     @PutMapping("/{id}")
     public PagoDTO update(@PathVariable Long id, @RequestBody PagoDTO dto) {
         return pagoService.update(id, dto);
     }
 
-    // Eliminar un pago
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         pagoService.delete(id);

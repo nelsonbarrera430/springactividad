@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,27 +24,38 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    // Obtener todos los productos
+
     @GetMapping
     public List<ProductDTO> obtenerProductos() {
         return productService.obtenerTodo();
     }
 
-    // Obtener un producto por su ID
+
     @GetMapping("/{id}")
-    public Optional<ProductDTO> obtenerProductoPorId(@PathVariable("id") Long idProducto) {
-        return productService.obtenerPorId(idProducto);
+    public ResponseEntity<ProductDTO> obtenerProductoPorId(@PathVariable Long id) {
+        Optional<ProductDTO> producto = productService.obtenerPorId(id);
+        return producto.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Guardar un producto (POST)
+
     @PostMapping
-    public ProductDTO guardarProducto(@RequestBody ProductDTO productDTO) {
-        return productService.guardar(productDTO);
+    public ResponseEntity<ProductDTO> crearProducto(@RequestBody ProductDTO productDTO) {
+        return ResponseEntity.ok(productService.guardar(productDTO));
     }
 
-    // Eliminar un producto por ID
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductDTO> actualizarProducto(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
+        return ResponseEntity.ok(productService.actualizar(id, productDTO));
+    }
+
+
     @DeleteMapping("/{id}")
-    public boolean eliminarProducto(@PathVariable("id") Long idProducto) {
-        return productService.eliminar(idProducto);
+    public ResponseEntity<Void> eliminarProducto(@PathVariable Long id) {
+        if (productService.eliminar(id)) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

@@ -23,13 +23,13 @@ public class OrdenController {
     @Autowired
     private OrdenService ordenService;
 
-    // GET /ordenes
+   
     @GetMapping
     public List<OrdenDTO> listAll() {
         return ordenService.getAll();
     }
 
-    // GET /ordenes/{id}
+    
     @GetMapping("/{id}")
     public ResponseEntity<OrdenDTO> getOne(@PathVariable Long id) {
         OrdenDTO dto = ordenService.getById(id);
@@ -38,14 +38,14 @@ public class OrdenController {
                 : ResponseEntity.notFound().build();
     }
 
-    // POST /ordenes
+    
     @PostMapping
     public ResponseEntity<OrdenDTO> create(@RequestBody OrdenDTO dto) {
         OrdenDTO created = ordenService.save(dto);
         return ResponseEntity.status(201).body(created);
     }
 
-    // PUT /ordenes/{id}
+    
     @PutMapping("/{id}")
     public ResponseEntity<OrdenDTO> update(
             @PathVariable Long id,
@@ -56,7 +56,7 @@ public class OrdenController {
                 : ResponseEntity.notFound().build();
     }
 
-    // DELETE /ordenes/{id}
+    
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         ordenService.delete(id);
