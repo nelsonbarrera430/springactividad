@@ -8,6 +8,7 @@ public class ProductDTO {
     private String name;
     private String description;
     private Double price;
+    private Long stock;
 
     public void setId(Long id) {
         this.id = id;
@@ -39,6 +40,13 @@ public class ProductDTO {
 
     public Double getPrice() {
         return price;
+    }
+    public Long getStock() {
+        return stock;
+    }
+    
+    public void setStock(Long stock) {
+        this.stock = stock;
     }
     
 }

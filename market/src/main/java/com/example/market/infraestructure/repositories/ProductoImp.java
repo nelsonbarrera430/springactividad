@@ -2,48 +2,58 @@ package com.example.market.infraestructure.repositories;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.example.market.domain.dto.ProductDTO;
+import com.example.market.domain.repository.IProduct;
 import com.example.market.infraestructure.crud.ProductoRepository;
 import com.example.market.infraestructure.entity.Producto;
-import com.example.market.infraestructure.mapper.ProductMapper;
+import com.example.market.infraestructure.mapper.ProductoMapper;
 
 @Repository
-public class ProductoImp {
+public class ProductoImp implements IProduct {
 
     @Autowired
     private ProductoRepository productoRepository;
 
     @Autowired
-    private ProductMapper mapper;
+    private ProductoMapper productoMapper;
 
+    @Override
     public List<ProductDTO> getAll() {
-        return productoRepository.findAll().stream()
-            .map(mapper::toProductDTO)
-            .collect(Collectors.toList());
+        List<Producto> productos = productoRepository.findAll();
+        return productoMapper.toProductsDTO(productos);
     }
 
-    public Optional<ProductDTO> getProduct(Long idProducto) {
-        return productoRepository.findById(idProducto)
-            .map(mapper::toProductDTO);
+    @Override
+    public Optional<ProductDTO> getById(Long id) {
+        return productoRepository.findById(id).map(productoMapper::toProductDTO);
     }
 
+    @Override
     public ProductDTO save(ProductDTO productDTO) {
-        Producto entidad = mapper.toProducto(productDTO);
-        Producto guardado = productoRepository.save(entidad);
-        return mapper.toProductDTO(guardado);
+        Producto producto = productoMapper.toProducto(productDTO);
+        return productoMapper.toProductDTO(productoRepository.save(producto));
     }
 
-    public boolean delete(Long idProducto) {
-        return productoRepository.findById(idProducto)
-            .map(p -> {
-                productoRepository.delete(p);
-                return true;
-            })
-            .orElse(false);
+    @Override
+    public ProductDTO update(Long id, ProductDTO productDTO) {
+        if (productoRepository.existsById(id)) {
+            Producto producto = productoMapper.toProducto(productDTO);
+            producto.setId(id);
+            return productoMapper.toProductDTO(productoRepository.save(producto));
+        }
+        return null;
+    }
+
+    @Override
+    public boolean delete(Long id) {
+        if (productoRepository.existsById(id)) {
+            productoRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }

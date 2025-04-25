@@ -19,16 +19,19 @@ public class ProductService {
         return productoImp.getAll();
     }
 
-    public Optional<ProductDTO> obtenerPorId(Long idProducto) {
-        return productoImp.getProduct(idProducto);
+    public Optional<ProductDTO> obtenerPorId(Long id) {
+        return productoImp.getById(id);
     }
 
-    public ProductDTO guardar(ProductDTO product) {
-        return productoImp.save(product);
+    public ProductDTO guardar(ProductDTO productDTO) {
+        return productoImp.save(productDTO);
     }
 
-    public boolean eliminar(Long idProducto) {
-        return productoImp.delete(idProducto);
+    public ProductDTO actualizar(Long id, ProductDTO productDTO) {
+        return productoImp.update(id, productDTO);
+    }
+
+    public boolean eliminar(Long id) {
+        return productoImp.delete(id);
     }
 }
-
